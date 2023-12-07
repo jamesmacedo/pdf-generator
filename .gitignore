@@ -1,0 +1,3 @@
+app/uploads/*.pdf
+app/node_modules/
+.env
