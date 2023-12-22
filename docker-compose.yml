@@ -12,7 +12,7 @@ services:
     ports:
       - 4000:4000
     volumes:
-      - ./app:/usr/var/app
+      - ./app/uploads/:/usr/var/app/uploads
     network_mode: "host"
     extra_hosts:
       - "host.docker.internal:host-gateway"
