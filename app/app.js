@@ -7,6 +7,8 @@ const app = express();
 
 require('dotenv').config();
 
+const generate = require('./src/helpers')
+
 var Exporter = require('./src/Exporter');
 
 app.use(express.json());
@@ -15,36 +17,33 @@ app.use(cors());
 app.post('/exportar', async function (req, res) {
   
   const {page,request} = req.body;
-  
-  console.log(req.body)
 
   this.path = "uploads";
-  this.nome_arquivo = `pdf.pdf`;
+  this.nome_arquivo = `${generate(40)}.pdf`;
 
   this.page = page + request;
-  //console.log(this.page)
 
   var path = `${this.path}/${this.nome_arquivo}`; 
 
   var exporter = new Exporter(path,this.nome_arquivo,this.page); 
 
-  await run(exporter);
+  await gerar(exporter);
 
-  res.download(path);
+  res.download(path,'file.pdf',function(err){
+    if(!err){
+      deletar(path);
+    }
+  });
 })
 
-async function run(exporter){
-  await gerar(exporter);
-  await deletar();
-}
 
 async function gerar(exporter){ 
   return exporter.download();
 }
 
-async function deletar(){
+async function deletar(path){
   return new Promise(async (resolve)=>{
-    exec(`rm -rf ${this.nome_arquivo}`, function (err){
+    exec(`rm -rf ${path}`, function (err){
       if (err){
         console.error('Ocorreu um erro ao deletar o arquivo local: ' + err)
       }else{
