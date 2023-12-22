@@ -1,4 +1,6 @@
 const express = require('express');
+var cors = require('cors');
+
 var exec = require('child_process').execSync;
 
 const app = express();
@@ -8,21 +10,27 @@ require('dotenv').config();
 var Exporter = require('./src/Exporter');
 
 app.use(express.json());
+app.use(cors());
 
-app.post('/exportar', function (req, res) {
+app.post('/exportar', async function (req, res) {
   
-  const {page,requests} = req.body;
+  const {page,request} = req.body;
   
+  console.log(req.body)
+
   this.path = "uploads";
   this.nome_arquivo = `pdf.pdf`;
 
-  this.page = page + requests;
+  this.page = page + request;
+  //console.log(this.page)
 
-  var exporter = new Exporter(this.path,this.nome_arquivo,this.page); 
+  var path = `${this.path}/${this.nome_arquivo}`; 
 
-  run(exporter,mail);
+  var exporter = new Exporter(path,this.nome_arquivo,this.page); 
 
-  res.send('ok');
+  await run(exporter);
+
+  res.download(path);
 })
 
 async function run(exporter){
@@ -47,4 +55,4 @@ async function deletar(){
   }); 
 }
 
-app.listen(4000)
+app.listen(4500)

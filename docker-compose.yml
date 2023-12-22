@@ -12,10 +12,7 @@ services:
     ports:
       - 4000:4000
     volumes:
-      - ./app/uploads/:/usr/var/app/uploads
+      - ./app:/usr/var/app
     network_mode: "host"
     extra_hosts:
       - "host.docker.internal:host-gateway"
-      - "dev2.gigadados.com.br:127.0.0.1"
-      - "dev.gigadados.com.br:127.0.0.1"
-
