@@ -15,7 +15,7 @@ class Exporter{
         const p = await browser.newPage();
         //await p.setViewport({ width: 1000, height: 500 })
         await p.goto(this.page);
-        //await p.waitForTimeout(3000);
+        await p.waitForTimeout(3000);
         // margin:{ top: '1cm', bottom: '1cm', left:'2cm',right:'2cm'}
         await p.pdf({ path: this.path, fullPage: true, printBackground:true});
         await browser.close();
